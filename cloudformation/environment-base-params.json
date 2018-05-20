@@ -1,14 +1,7 @@
-[
-  {
-    "ParameterKey": "DBMasterUserName",
-    "ParameterValue": "matusko"
-  },
-  {
-    "ParameterKey": "DBMasterPassword",
-    "ParameterValue": "sdfj1d2f8"
-  },
-  {
-    "ParameterKey": "TemplateBucket",
-    "ParameterValue": "TEMPLATE_PATH_PLACEHOLDER"
+{
+  "Parameters" : {
+    "DBMasterUserName": "matusko",
+    "DBMasterPassword": "sdfj1d2f8",
+    "TemplateBucket": "TEMPLATE_PATH_PLACEHOLDER"
   }
-]
+}
