@@ -49,7 +49,7 @@ Resources:
   LoadBalancer:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/environment-templates/load-balancer.yaml"
+      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/cloudformation/environment-templates/load-balancer.yaml"
       Parameters:
         Subnets: !GetAtt VPC.Outputs.Subnets
         VpcId: !GetAtt VPC.Outputs.VpcId
@@ -57,7 +57,7 @@ Resources:
   VPC:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/environment-templates/vpc.yaml"
+      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/cloudformation/environment-templates/vpc.yaml"
       Parameters:
         Name: !Ref AWS::StackName
         VpcCIDR: 10.215.0.0/16
@@ -67,7 +67,7 @@ Resources:
   Database:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/environment-templates/database.yaml"
+      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/cloudformation/environment-templates/database.yaml"
       Parameters:
         Subnets: !GetAtt VPC.Outputs.Subnets
         VpcId: !GetAtt VPC.Outputs.VpcId

@@ -9,6 +9,6 @@
   },
   {
     "ParameterKey": "TemplateBucket",
-    "ParameterValue": "wixit-templates"
+    "ParameterValue": "TEMPLATE_PATH_PLACEHOLDER"
   }
 ]
