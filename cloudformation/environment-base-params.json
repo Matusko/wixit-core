@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "DBMasterUserName",
+    "ParameterValue": "matusko"
+  },
+  {
+    "ParameterKey": "DBMasterPassword",
+    "ParameterValue": "sdfj1d2f8"
+  },
+  {
+    "ParameterKey": "TemplateBucket",
+    "ParameterValue": "wixit-templates"
+  }
+]

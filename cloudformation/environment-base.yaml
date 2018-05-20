@@ -1,0 +1,99 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+
+
+Description: >
+  This template shows how to use AWS CodePipeline and AWS CodeBuild to build an
+  automated continuous deployment pipeline to Amazon Elastic Container Service
+  (Amazon ECS) using clusters powered by AWS Fargate or Amazon Elastic Compute
+  Cloud (Amazon EC2).
+
+
+Parameters:
+  DBMasterUserName:
+    Type: String
+    Default: matusko
+    Description: Master name for rds postgresql database
+
+  DBMasterPassword:
+    Type: String
+    Description: Password for rds postgresql database master
+    NoEcho: true
+
+  TemplateBucket:
+    Type: String
+    Default: ec2-spring-boot-cloudformation-stack
+    Description: >
+      The S3 bucket from which to fetch the templates used by this stack.
+
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterLabels:
+      DBMasterUserName:
+        default: "Database Master Name"
+      DBMasterPassword:
+        default: "Database Master Password"
+    ParameterGroups:
+      - Label:
+          default: Database Configuration
+        Parameters:
+          - DBMasterUserName
+          - DBMasterPassword
+      - Label:
+          default: Stack Configuration
+        Parameters:
+          - TemplateBucket
+
+Resources:
+  LoadBalancer:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/environment-templates/load-balancer.yaml"
+      Parameters:
+        Subnets: !GetAtt VPC.Outputs.Subnets
+        VpcId: !GetAtt VPC.Outputs.VpcId
+
+  VPC:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/environment-templates/vpc.yaml"
+      Parameters:
+        Name: !Ref AWS::StackName
+        VpcCIDR: 10.215.0.0/16
+        Subnet1CIDR: 10.215.10.0/24
+        Subnet2CIDR: 10.215.20.0/24
+
+  Database:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/environment-templates/database.yaml"
+      Parameters:
+        Subnets: !GetAtt VPC.Outputs.Subnets
+        VpcId: !GetAtt VPC.Outputs.VpcId
+        DBMasterUserName: !Ref DBMasterUserName
+        DBMasterPassword: !Ref DBMasterPassword
+
+
+Outputs:
+  ServiceUrl:
+    Description: The sample service that is being continuously deployed.
+    Value: !GetAtt LoadBalancer.Outputs.ServiceUrl
+
+  VpcId:
+    Value: !GetAtt VPC.Outputs.VpcId
+
+  Subnets:
+    Value: !GetAtt VPC.Outputs.Subnets
+
+  LoadBalancerArn:
+    Value: !GetAtt LoadBalancer.Outputs.LoadBalancerArn
+
+  LoadBalancerSourceSecurityGroup:
+    Value: !GetAtt LoadBalancer.Outputs.SecurityGroup
+
+  DatabaseEndpoint:
+    Value: !GetAtt Database.Outputs.DatabaseEndpoint
+
+  DatabasePort:
+    Value: !GetAtt Database.Outputs.DatabasePort
