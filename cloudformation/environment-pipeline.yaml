@@ -1,9 +1,6 @@
 Description: Create a CodePipeline to include Nested CloudFormation, CodeBuild and Approval steps.
 
 Parameters:
-  ProdTopic:
-    Type: String
-    Description: Name of the SNS topic in same region to send Production approval notification.
   ArtifactStoreS3Location:
     Type: String
     Description: Name of the S3 bucket to store CodePipeline artificat.
@@ -52,12 +49,6 @@ Resources:
                 Resource:
                   - Fn::Sub: arn:aws:s3:::${ArtifactStoreS3Location}
                   - Fn::Sub: arn:aws:s3:::${ArtifactStoreS3Location}/*
-              -
-                Effect: "Allow"
-                Action:
-                  - "sns:Publish"
-                Resource:
-                  - Fn::Sub: arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${ProdTopic}
               -
                 Effect: "Allow"
                 Action:
@@ -143,11 +134,31 @@ Resources:
                 Action:
                   - "ec2:Describe*"
                   - "ec2:CreateSecurityGroup"
+                  - "ec2:CreateVpc"
+                  - "ec2:DeleteVpc"
+                  - "ec2:ModifyVpcAttribute"
+                  - "ec2:CreateTags"
+                  - "ec2:CreateInternetGateway"
+                  - "ec2:DeleteInternetGateway"
+                  - "ec2:CreateSubnet"
+                  - "ec2:DeleteSubnet"
+                  - "ec2:CreateRouteTable"
+                  - "ec2:DeleteRouteTable"
+                  - "ec2:AttachInternetGateway"
+                  - "ec2:DetachInternetGateway"
+                  - "ec2:CreateRoute"
+                  - "ec2:DeleteRoute"
+                  - "ec2:ModifySubnetAttribute"
+                  - "ec2:AssociateRouteTable"
+                  - "ec2:DisassociateRouteTable"
                   - "autoscaling:Describe*"
                   - "elasticloadbalancing:Describe*"
                   - "elasticloadbalancing:CreateLoadBalancer"
+                  - "elasticloadbalancing:DeleteLoadBalancer"
                   - "autoscaling:CreateAutoScalingGroup"
                   - "autoscaling:CreateLaunchConfiguration"
+                  - "rds:CreateDBSubnetGroup"
+                  - "rds:DeleteDBSubnetGroup"
                 Resource:
                   - "*"
               -
@@ -500,24 +511,13 @@ Resources:
                 ChangeSetName: ProdCBChangeSet
                 RoleArn:
                   Fn::GetAtt: [ CloudFormationRole, Arn ]
+
                 Capabilities: CAPABILITY_NAMED_IAM
                 StackName:
                   Fn::Sub: Prod-${AWS::StackName}
                 TemplateConfiguration: CFNTemplateArtifact::cloudformation/environment-base-params.json
                 TemplatePath: CFNTemplateArtifact::cloudformation/environment-base.yaml
               RunOrder: 1
-            -
-              Name: ProdApproval
-              ActionTypeId:
-                Category: Approval
-                Owner: AWS
-                Version: 1
-                Provider: Manual
-              Configuration:
-                NotificationArn:
-                  Fn::Sub: arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${ProdTopic}
-                CustomData: Approve deployment in production.
-              RunOrder: 2
             -
               Name: DeployProduction
               InputArtifacts:
@@ -533,7 +533,7 @@ Resources:
                 ChangeSetName: ProdCBChangeSet
                 StackName:
                   Fn::Sub: Prod-${AWS::StackName}
-              RunOrder: 3
+              RunOrder: 2
 
       ArtifactStore:
         Type: S3
