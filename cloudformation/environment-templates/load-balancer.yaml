@@ -27,6 +27,18 @@ Resources:
       SecurityGroups:
         - !Ref SecurityGroup
 
+  myDNS:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: wixit.xyz.
+      Comment: Zone apex alias wixit.xyz targeted to LoadBalancer.
+      RecordSets:
+      - Name: wixit.xyz.
+        Type: A
+        AliasTarget:
+          HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneNameID
+          DNSName: !GetAtt LoadBalancer.DNSName
+
 Outputs:
   ServiceUrl:
     Description: URL of the load balancer for the sample service.
