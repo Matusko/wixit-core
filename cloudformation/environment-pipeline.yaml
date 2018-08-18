@@ -159,6 +159,9 @@ Resources:
                   - "autoscaling:CreateLaunchConfiguration"
                   - "rds:CreateDBSubnetGroup"
                   - "rds:DeleteDBSubnetGroup"
+                  - "route53:ListHostedZones"
+                  - "route53:ChangeResourceRecordSets"
+                  - "route53:GetChange"
                 Resource:
                   - "*"
               -
