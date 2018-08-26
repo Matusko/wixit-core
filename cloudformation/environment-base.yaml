@@ -26,6 +26,10 @@ Parameters:
     Description: >
       The S3 bucket from which to fetch the templates used by this stack.
 
+  DnsRecordSetNamePrefix:
+      Type: String
+      Description: dns prefix, dns of loabalancer will be {DnsRecordSetNamePrefix}.wixit.xyz
+
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -53,6 +57,7 @@ Resources:
       Parameters:
         Subnets: !GetAtt VPC.Outputs.Subnets
         VpcId: !GetAtt VPC.Outputs.VpcId
+        DnsRecordSetNamePrefix: !Ref DnsRecordSetNamePrefix
 
   VPC:
     Type: AWS::CloudFormation::Stack

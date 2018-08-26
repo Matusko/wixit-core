@@ -8,6 +8,9 @@ Parameters:
   VpcId:
     Type: String
 
+  DnsRecordSetNamePrefix:
+    Type: String
+
 Resources:
   SecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
@@ -33,7 +36,7 @@ Resources:
       HostedZoneName: wixit.xyz.
       Comment: Zone apex alias wixit.xyz targeted to LoadBalancer.
       RecordSets:
-      - Name: api.wixit.xyz.
+      - Name: !Sub ${DnsRecordSetNamePrefix}.wixit.xyz.
         Type: A
         AliasTarget:
           HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID

@@ -2,6 +2,7 @@
   "Parameters" : {
     "DBMasterUserName": "matusko",
     "DBMasterPassword": "sdfj1d2f8",
-    "TemplateBucket": "TEMPLATE_PATH_PLACEHOLDER"
+    "TemplateBucket": "TEMPLATE_PATH_PLACEHOLDER",
+    "DnsRecordSetNamePrefix": "dev-api"
   }
 }
