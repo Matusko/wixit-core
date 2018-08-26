@@ -170,6 +170,7 @@ Resources:
                   - "ec2:AttachNetworkInterface"
                   - "ec2:AttachVolume"
                   - "ec2:AuthorizeSecurityGroupIngress"
+                  - "ec2:RevokeSecurityGroupIngress"
                   - "ec2:CreateNetworkInterface"
                   - "ec2:CreateTags"
                   - "ec2:CreateVolume"
