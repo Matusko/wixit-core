@@ -33,7 +33,7 @@ Resources:
       HostedZoneName: wixit.xyz.
       Comment: Zone apex alias wixit.xyz targeted to LoadBalancer.
       RecordSets:
-      - Name: wixit.xyz.
+      - Name: api.wixit.xyz.
         Type: A
         AliasTarget:
           HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
