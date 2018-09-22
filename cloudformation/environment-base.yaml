@@ -87,18 +87,30 @@ Outputs:
 
   VpcId:
     Value: !GetAtt VPC.Outputs.VpcId
+    Export:
+      Name: !Sub "${AWS::StackName}-VpcId"
 
   Subnets:
     Value: !GetAtt VPC.Outputs.Subnets
+    Export:
+      Name: !Sub "${AWS::StackName}-Subnets"
 
   LoadBalancerArn:
     Value: !GetAtt LoadBalancer.Outputs.LoadBalancerArn
+    Export:
+      Name: !Sub "${AWS::StackName}-LoadBalancerArn"
 
   LoadBalancerSourceSecurityGroup:
     Value: !GetAtt LoadBalancer.Outputs.SecurityGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-LoadBalancerSourceSecurityGroup"
 
   DatabaseEndpoint:
     Value: !GetAtt Database.Outputs.DatabaseEndpoint
+    Export:
+      Name: !Sub "${AWS::StackName}-DatabaseEndpoint"
 
   DatabasePort:
     Value: !GetAtt Database.Outputs.DatabasePort
+    Export:
+      Name: !Sub "${AWS::StackName}-DatabasePort"
