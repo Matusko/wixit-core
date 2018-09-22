@@ -1,52 +1,52 @@
 version: 0.1
-  environment_variables:
-    plaintext:
-      CHILD_TEMPLATES: |
-        cloudformation/environment-templates/vpc.yaml
-        cloudformation/environment-templates/load-balancer.yaml
-        cloudformation/environment-templates/database.yaml
-      TEMPLATE_FILES: |
-        cloudformation/environment-base.yaml
-        cloudformation/environment-templates/vpc.yaml
-        cloudformation/environment-templates/load-balancer.yaml
-        cloudformation/environment-templates/database.yaml
-      CONFIG_FILES: |
-        cloudformation/environment-base-params.json
-  phases:
-    install:
-      commands:
-        npm install jsonlint -g
-    pre_build:
-      commands:
-      - ls -la
-      - echo "Validating CFN templates"
-      - |
-        for cfn_template in $TEMPLATE_FILES; do
-          echo "Validating CloudFormation template file $cfn_template"
-          aws cloudformation validate-template --template-body file://$cfn_template
-        done
-      - |
-        for conf in $CONFIG_FILES; do
-          echo "Validating CFN parameters config file $conf"
-          jsonlint -q $conf
-        done
-    build:
-      commands:
-      - echo "Copying child stack templates to S3"
-      - |
-        for child_template in $CHILD_TEMPLATES; do
-          aws s3 cp "$child_template" "s3://$TEMPLATE_BUCKET/codebuild/$child_template"
-        done
-      - echo "Updating template configurtion files to use the appropriate values"
-      - |
-        for conf in $CONFIG_FILES; do
-          echo "Replacing \"TEMPLATE_PATH_PLACEHOLDER\" for \"$TEMPLATE_BUCKET/codebuild\" in $conf"
-          sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" $conf
-        done
-      - |
-        aws s3 cp "cloudformation/environment-base.yaml" "s3://$TEMPLATE_BUCKET/codebuild/environment-base.yaml"
-        aws s3 cp "cloudformation/environment-base-params.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params.json"
-  artifacts:
-    files:
-    - cloudformation/environment-base.yaml
-    - cloudformation/environment-base-params.json
+environment_variables:
+  plaintext:
+    CHILD_TEMPLATES: |
+      cloudformation/environment-templates/vpc.yaml
+      cloudformation/environment-templates/load-balancer.yaml
+      cloudformation/environment-templates/database.yaml
+    TEMPLATE_FILES: |
+      cloudformation/environment-base.yaml
+      cloudformation/environment-templates/vpc.yaml
+      cloudformation/environment-templates/load-balancer.yaml
+      cloudformation/environment-templates/database.yaml
+    CONFIG_FILES: |
+      cloudformation/environment-base-params.json
+phases:
+  install:
+    commands:
+      npm install jsonlint -g
+  pre_build:
+    commands:
+    - ls -la
+    - echo "Validating CFN templates"
+    - |
+      for cfn_template in $TEMPLATE_FILES; do
+        echo "Validating CloudFormation template file $cfn_template"
+        aws cloudformation validate-template --template-body file://$cfn_template
+      done
+    - |
+      for conf in $CONFIG_FILES; do
+        echo "Validating CFN parameters config file $conf"
+        jsonlint -q $conf
+      done
+  build:
+    commands:
+    - echo "Copying child stack templates to S3"
+    - |
+      for child_template in $CHILD_TEMPLATES; do
+        aws s3 cp "$child_template" "s3://$TEMPLATE_BUCKET/codebuild/$child_template"
+      done
+    - echo "Updating template configurtion files to use the appropriate values"
+    - |
+      for conf in $CONFIG_FILES; do
+        echo "Replacing \"TEMPLATE_PATH_PLACEHOLDER\" for \"$TEMPLATE_BUCKET/codebuild\" in $conf"
+        sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" $conf
+      done
+    - |
+      aws s3 cp "cloudformation/environment-base.yaml" "s3://$TEMPLATE_BUCKET/codebuild/environment-base.yaml"
+      aws s3 cp "cloudformation/environment-base-params.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params.json"
+artifacts:
+  files:
+  - cloudformation/environment-base.yaml
+  - cloudformation/environment-base-params.json
