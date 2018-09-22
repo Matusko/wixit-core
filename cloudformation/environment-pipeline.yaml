@@ -451,7 +451,7 @@ Resources:
                 Capabilities: CAPABILITY_NAMED_IAM
                 StackName:
                   Fn::Sub: Prod-${AWS::StackName}
-                TemplateConfiguration: CFNTemplateArtifact::cloudformation/environment-base-params.json
+                TemplateConfiguration: CFNTemplateArtifact::cloudformation/environment-base-params-prod.json
                 TemplatePath: CFNTemplateArtifact::cloudformation/environment-base.yaml
               RunOrder: 1
             -
