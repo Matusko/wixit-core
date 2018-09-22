@@ -30,12 +30,11 @@ phases:
       for child_template in $CHILD_TEMPLATES; do
         aws s3 cp "$child_template" "s3://$TEMPLATE_BUCKET/codebuild/$child_template"
       done
-    - |
-      echo "Updating template configurtion files to use the appropriate values"
-      aws s3 cp "s3://wixit-core-configs/configs/prod/environment-base-params.json" "cloudformation/environment-base-params-prod.json"
-      sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" cloudformation/environment-base-params-prod.json
-      aws s3 cp "cloudformation/environment-base.yaml" "s3://$TEMPLATE_BUCKET/codebuild/environment-base.yaml"
-      aws s3 cp "cloudformation/environment-base-params-prod.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params.json"
+    - echo "Updating template configurtion files to use the appropriate values"
+    - aws s3 cp "s3://wixit-core-configs/configs/prod/environment-base-params.json" "cloudformation/environment-base-params-prod.json"
+    - sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" cloudformation/environment-base-params-prod.json
+    - aws s3 cp "cloudformation/environment-base.yaml" "s3://$TEMPLATE_BUCKET/codebuild/environment-base.yaml"
+    - aws s3 cp "cloudformation/environment-base-params-prod.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params.json"
 artifacts:
   files:
   - cloudformation/environment-base.yaml
