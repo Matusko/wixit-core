@@ -69,9 +69,9 @@ Resources:
                   - "cloudformation:ExecuteChangeSet"
                   - "cloudformation:ValidateTemplate"
                 Resource:
-                  - Fn::Sub: arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/Test-${AWS::StackName}*
-                  - Fn::Sub: arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/UAT-${AWS::StackName}*
-                  - Fn::Sub: arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/Prod-${AWS::StackName}*
+                  - Fn::Sub: arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${AWS::StackName}-DEV*
+                  - Fn::Sub: arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${AWS::StackName}-UAT*
+                  - Fn::Sub: arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${AWS::StackName}-PROD*
               -
                 Effect: "Allow"
                 Action:
@@ -214,9 +214,9 @@ Resources:
                   - "iam:ListInstanceProfilesForRole"
                   - "iam:RemoveRoleFromInstanceProfile"
                 Resource:
-                  - Fn::Sub: arn:aws:iam::${AWS::AccountId}:instance-profile/Test-${AWS::StackName}-SecurityStack*
-                  - Fn::Sub: arn:aws:iam::${AWS::AccountId}:instance-profile/UAT-${AWS::StackName}-SecurityStack*
-                  - Fn::Sub: arn:aws:iam::${AWS::AccountId}:instance-profile/Prod-${AWS::StackName}-SecurityStack*
+                  - Fn::Sub: arn:aws:iam::${AWS::AccountId}:instance-profile/${AWS::StackName}-DEV-SecurityStack*
+                  - Fn::Sub: arn:aws:iam::${AWS::AccountId}:instance-profile/${AWS::StackName}-UAT-SecurityStack*
+                  - Fn::Sub: arn:aws:iam::${AWS::AccountId}:instance-profile/${AWS::StackName}-PROD-SecurityStack*
               -
                 Effect: "Allow"
                 Action:
@@ -281,12 +281,12 @@ Resources:
                   - "autoscaling:TerminateInstanceInAutoScalingGroup"
                   - "autoscaling:UpdateAutoScalingGroup"
                 Resource:
-                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/Test-${AWS::StackName}-ServerStack-*
-                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/UAT-${AWS::StackName}-ServerStack-*
-                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/Prod-${AWS::StackName}-ServerStack-*
-                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:${AWS::AccountId}:*:Test-${AWS::StackName}-ServerStack-*
-                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:${AWS::AccountId}:*:UAT-${AWS::StackName}-ServerStack-*
-                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:${AWS::AccountId}:*:Prod-${AWS::StackName}-ServerStack-*
+                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/${AWS::StackName}-DEV-ServerStack-*
+                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/${AWS::StackName}-UAT-ServerStack-*
+                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/${AWS::StackName}-PROD-ServerStack-*
+                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:${AWS::AccountId}:*:${AWS::StackName}-DEV-ServerStack-*
+                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:${AWS::AccountId}:*:${AWS::StackName}-UAT-ServerStack-*
+                  - Fn::Sub: arn:aws:autoscaling:${AWS::Region}:${AWS::AccountId}:launchConfiguration:${AWS::AccountId}:*:${AWS::StackName}-PROD-ServerStack-*
               -
                 Effect: "Allow"
                 Action:
@@ -463,7 +463,7 @@ Resources:
 
                 Capabilities: CAPABILITY_NAMED_IAM
                 StackName:
-                  Fn::Sub: Prod-${AWS::StackName}
+                  Fn::Sub: ${AWS::StackName}-PROD
                 TemplateConfiguration: CFNTemplateArtifact::cloudformation/environment-base-params-prod.json
                 TemplatePath: CFNTemplateArtifact::cloudformation/environment-base.yaml
               RunOrder: 1
