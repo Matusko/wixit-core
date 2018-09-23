@@ -61,6 +61,7 @@ Resources:
                 Action:
                   - "cloudformation:CreateChangeSet"
                   - "cloudformation:CreateStack"
+                  - "cloudformation:DeleteChangeSet"
                   - "cloudformation:CreateUploadBucket"
                   - "cloudformation:DeleteStack"
                   - "cloudformation:Describe*"
