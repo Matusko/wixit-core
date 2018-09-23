@@ -481,7 +481,7 @@ Resources:
                 ActionMode: CHANGE_SET_EXECUTE
                 ChangeSetName: ProdCBChangeSet
                 StackName:
-                  Fn::Sub: Prod-${AWS::StackName}
+                  Fn::Sub: ${AWS::StackName}-PROD
               RunOrder: 2
 
       ArtifactStore:
