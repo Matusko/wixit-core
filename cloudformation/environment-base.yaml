@@ -61,6 +61,7 @@ Resources:
         Subnets: !GetAtt VPC.Outputs.Subnets
         VpcId: !GetAtt VPC.Outputs.VpcId
         DnsRecordSetNamePrefix: !Ref DnsRecordSetNamePrefix
+        LoadBalancerListenerCertificateArn: !Ref LoadBalancerListenerCertificateArn
 
   VPC:
     Type: AWS::CloudFormation::Stack
