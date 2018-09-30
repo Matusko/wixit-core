@@ -11,6 +11,9 @@ Parameters:
   DnsRecordSetNamePrefix:
     Type: String
 
+  LoadBalancerListenerCertificateArn:
+    Type: String
+
 Resources:
   SecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
@@ -29,6 +32,26 @@ Resources:
       Subnets: !Ref Subnets
       SecurityGroups:
         - !Ref SecurityGroup
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+      - CertificateArn: !Ref LoadBalancerListenerCertificateArn
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      SslPolicy: ELBSecurityPolicy-TLS-1-2-2017-01
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref TargetGroup
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref VpcId
+      Port: 8080
+      Protocol: HTTP
 
   DNS:
     Type: AWS::Route53::RecordSetGroup
@@ -50,5 +73,5 @@ Outputs:
   SecurityGroup:
     Value: !Ref SecurityGroup
 
-  LoadBalancerArn:
-    Value: !Ref LoadBalancer
+  LoadBalancerListenerArn:
+    Value: !Ref LoadBalancerListener

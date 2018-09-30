@@ -27,8 +27,11 @@ Parameters:
       The S3 bucket from which to fetch the templates used by this stack.
 
   DnsRecordSetNamePrefix:
-      Type: String
-      Description: dns prefix, dns of loabalancer will be {DnsRecordSetNamePrefix}.wixit.xyz
+    Type: String
+    Description: dns prefix, dns of loabalancer will be {DnsRecordSetNamePrefix}.wixit.xyz
+
+  LoadBalancerListenerCertificateArn:
+    Type: String
 
 
 Metadata:
@@ -95,10 +98,10 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-Subnets"
 
-  LoadBalancerArn:
-    Value: !GetAtt LoadBalancer.Outputs.LoadBalancerArn
+  LoadBalancerListenerArn:
+    Value: !GetAtt LoadBalancer.Outputs.LoadBalancerListenerArn
     Export:
-      Name: !Sub "${AWS::StackName}-LoadBalancerArn"
+      Name: !Sub "${AWS::StackName}-LoadBalancerListenerArn"
 
   LoadBalancerSourceSecurityGroup:
     Value: !GetAtt LoadBalancer.Outputs.SecurityGroup
