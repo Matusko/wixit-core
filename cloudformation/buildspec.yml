@@ -13,7 +13,8 @@ environment_variables:
 phases:
   install:
     commands:
-      npm install jsonlint -g
+    - apt update && apt install -y jq
+    - npm install jsonlint -g
   pre_build:
     commands:
     - ls -la
