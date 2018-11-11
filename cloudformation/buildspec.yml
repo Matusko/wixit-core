@@ -43,7 +43,7 @@ phases:
       temp="${password_str%\"}"
       DATABASE_MASTER_PASSWORD="${temp#\"}"
 
-      sed -i -e "s/DATABASE_MASTER_PASSWORD_PLACEHOLDER/$DATABASE_MASTER_PASSWORD\/codebuild/" cloudformation/environment-base-params-prod.json
+      sed -i -e "s/DATABASE_MASTER_PASSWORD_PLACEHOLDER/$DATABASE_MASTER_PASSWORD/" cloudformation/environment-base-params-prod.json
       cat cloudformation/environment-base-params-prod.json
 
     - sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" cloudformation/environment-base-params-prod.json
