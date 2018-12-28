@@ -20,6 +20,11 @@ Parameters:
     Description: Password for rds postgresql database master
     NoEcho: true
 
+  RedisPassword:
+    Type: String
+    Description: Password for redis elasticache replication group
+    NoEcho: true
+
   TemplateBucket:
     Type: String
     Default: ec2-spring-boot-cloudformation-stack
@@ -83,6 +88,15 @@ Resources:
         DBMasterUserName: !Ref DBMasterUserName
         DBMasterPassword: !Ref DBMasterPassword
 
+  Redis:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://s3.amazonaws.com/${TemplateBucket}/cloudformation/environment-templates/redis.yaml"
+      Parameters:
+        Subnets: !GetAtt VPC.Outputs.Subnets
+        VpcId: !GetAtt VPC.Outputs.VpcId
+        RedisPassword: !Ref RedisPassword
+
 
 Outputs:
   ServiceUrl:
@@ -118,3 +132,13 @@ Outputs:
     Value: !GetAtt Database.Outputs.DatabasePort
     Export:
       Name: !Sub "${AWS::StackName}-DatabasePort"
+
+  RedisEndpoint:
+    Value: !GetAtt Redis.Outputs.RedisEndpoint
+    Export:
+      Name: !Sub "${AWS::StackName}-RedisEndpoint"
+
+  RedisPort:
+    Value: !GetAtt Redis.Outputs.RedisPort
+    Export:
+      Name: !Sub "${AWS::StackName}-RedisPort"
