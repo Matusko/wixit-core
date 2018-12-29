@@ -306,7 +306,7 @@ Resources:
                 Action:
                   - "elasticache:*"
                 Resource:
-                  - Fn::Sub: arn:aws:elasticache:${AWS::Region}:${AWS::AccountId}:cluster:*${AWS::StackName}-PROD-*
+                  - Fn::Sub: arn:aws:elasticache:${AWS::Region}:${AWS::AccountId}:*
 
   CodeBuildRole:
     Type: "AWS::IAM::Role"
