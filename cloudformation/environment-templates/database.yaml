@@ -36,7 +36,7 @@ Resources:
   PostgreSQLDatabase:
     Type: AWS::RDS::DBInstance
     Properties:
-      DBName: ecs_spring_boot
+      DBName: wixit
       AllocatedStorage: 20
       DBInstanceClass: db.t2.micro
       Engine: postgres
