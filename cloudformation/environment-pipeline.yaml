@@ -299,10 +299,15 @@ Resources:
                   - Fn::Sub: arn:aws:s3:::${ArtifactStoreS3Location}/*
               - Effect: "Allow"
                 Action:
-                  - "elasticache:*"
                   - "iam:CreateServiceLinkedRole"
                 Resource:
-                  - "*"
+                  - Fn::Sub: arn:aws:iam::${AWS::AccountId}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache
+              - Effect: "Allow"
+                Action:
+                  - "elasticache:*"
+                Resource:
+                  - Fn::Sub: arn:aws:elasticache:${AWS::Region}:${AWS::AccountId}:cluster:*${AWS::StackName}-PROD-*
+
   CodeBuildRole:
     Type: "AWS::IAM::Role"
     Properties:
