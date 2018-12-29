@@ -16,10 +16,11 @@ Resources:
   RedisReplicationGroup:
     Type: AWS::ElastiCache::ReplicationGroup
     Properties:
+      AutomaticFailoverEnabled: true
       TransitEncryptionEnabled: true
       AuthToken: !Ref RedisPassword
       AutoMinorVersionUpgrade: true
-      NumCacheClusters: 1
+      NumCacheClusters: 2
       CacheNodeType: cache.t2.micro
       CacheSubnetGroupName:
         Ref: RedisReplicationGroupSubnets
