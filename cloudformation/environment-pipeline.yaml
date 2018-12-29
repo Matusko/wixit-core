@@ -304,7 +304,7 @@ Resources:
                   - Fn::Sub: arn:aws:iam::${AWS::AccountId}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache
               - Effect: "Allow"
                 Action:
-                  - "elasticache:CreateCacheSubnetGroup"
+                  - "elasticache:*"
                 Resource:
                   - "*"
 
