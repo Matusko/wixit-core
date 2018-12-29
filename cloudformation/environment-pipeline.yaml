@@ -297,6 +297,12 @@ Resources:
                 Resource:
                   - Fn::Sub: arn:aws:s3:::${ArtifactStoreS3Location}
                   - Fn::Sub: arn:aws:s3:::${ArtifactStoreS3Location}/*
+              - Effect: "Allow"
+                Action:
+                  - "elasticache:*"
+                  - "iam:CreateServiceLinkedRole"
+                Resource:
+                  - "*"
   CodeBuildRole:
     Type: "AWS::IAM::Role"
     Properties:

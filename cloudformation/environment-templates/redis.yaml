@@ -19,6 +19,7 @@ Resources:
       TransitEncryptionEnabled: true
       AuthToken: !Ref RedisPassword
       AutoMinorVersionUpgrade: true
+      NumCacheClusters: 1
       CacheNodeType: cache.t2.micro
       CacheSubnetGroupName:
         Ref: RedisReplicationGroupSubnets
