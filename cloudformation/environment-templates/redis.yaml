@@ -17,15 +17,13 @@ Resources:
     Type: AWS::ElastiCache::ReplicationGroup
     Properties:
       AutomaticFailoverEnabled: false
-      TransitEncryptionEnabled: true
-      AuthToken: !Ref RedisPassword
       AutoMinorVersionUpgrade: true
-      NumCacheClusters: 1
-      CacheNodeType: cache.t2.micro
+      NumCacheClusters: 2
+      CacheNodeType: cache.m3.medium
       CacheSubnetGroupName:
         Ref: RedisReplicationGroupSubnets
       Engine: redis
-      EngineVersion: '5.0.0'
+      EngineVersion: '3.2'
       Port: 6379
       ReplicationGroupDescription: Redis replication group for quick accessible wixit data
       SecurityGroupIds:
