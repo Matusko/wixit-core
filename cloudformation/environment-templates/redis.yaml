@@ -8,9 +8,6 @@ Parameters:
   VpcId:
     Type: AWS::EC2::VPC::Id
 
-  RedisPassword:
-    Type: String
-
 
 Resources:
   RedisReplicationGroup:
@@ -18,8 +15,6 @@ Resources:
     Properties:
       AutomaticFailoverEnabled: false
       AutoMinorVersionUpgrade: true
-      TransitEncryptionEnabled: true
-      AuthToken: !Ref RedisPassword
       NumCacheClusters: 1
       CacheNodeType: cache.t2.micro
       CacheSubnetGroupName:

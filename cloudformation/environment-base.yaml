@@ -20,11 +20,6 @@ Parameters:
     Description: Password for rds postgresql database master
     NoEcho: true
 
-  RedisPassword:
-    Type: String
-    Description: Password for redis elasticache replication group
-    NoEcho: true
-
   TemplateBucket:
     Type: String
     Default: ec2-spring-boot-cloudformation-stack
@@ -95,7 +90,6 @@ Resources:
       Parameters:
         Subnets: !GetAtt VPC.Outputs.Subnets
         VpcId: !GetAtt VPC.Outputs.VpcId
-        RedisPassword: !Ref RedisPassword
 
 
 Outputs:

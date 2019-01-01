@@ -2,7 +2,6 @@
   "Parameters" : {
     "DBMasterUserName": "matusko",
     "DBMasterPassword": "DATABASE_MASTER_PASSWORD_PLACEHOLDER",
-    "RedisPassword": "REDIS_PASSWORD_PLACEHOLDER",
     "TemplateBucket": "TEMPLATE_PATH_PLACEHOLDER",
     "DnsRecordSetNamePrefix": "dev-api",
     "LoadBalancerListenerCertificateArn": "arn:aws:acm:eu-west-1:588476158895:certificate/26da08d3-99a3-4b1b-b645-a09a6ca422cd"
