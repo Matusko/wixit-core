@@ -18,7 +18,7 @@ Resources:
     Properties:
       AutomaticFailoverEnabled: false
       AutoMinorVersionUpgrade: true
-      NumCacheClusters: 2
+      NumCacheClusters: 1
       CacheNodeType: cache.m3.medium
       CacheSubnetGroupName:
         Ref: RedisReplicationGroupSubnets
