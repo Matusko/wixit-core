@@ -19,6 +19,7 @@ Resources:
       AutomaticFailoverEnabled: false
       AutoMinorVersionUpgrade: true
       TransitEncryptionEnabled: true
+      AuthToken: !Ref RedisPassword
       NumCacheClusters: 1
       CacheNodeType: cache.t2.micro
       CacheSubnetGroupName:
