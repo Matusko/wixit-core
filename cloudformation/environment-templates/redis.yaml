@@ -23,7 +23,7 @@ Resources:
       CacheSubnetGroupName:
         Ref: RedisReplicationGroupSubnets
       Engine: redis
-      EngineVersion: '3.2'
+      EngineVersion: '5.0.0'
       Port: 6379
       ReplicationGroupDescription: Redis replication group for quick accessible wixit data
       SecurityGroupIds:
