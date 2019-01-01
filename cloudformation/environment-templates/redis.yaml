@@ -18,6 +18,7 @@ Resources:
     Properties:
       AutomaticFailoverEnabled: false
       AutoMinorVersionUpgrade: true
+      TransitEncryptionEnabled: true
       NumCacheClusters: 1
       CacheNodeType: cache.t2.micro
       CacheSubnetGroupName:
