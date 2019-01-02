@@ -550,7 +550,7 @@ Resources:
                   Provider: Manual
                   Version: 1
                 Configuration:
-                  NotificationArn: !Ref CodePipelineSNSTopic
+                  NotificationArn: !Ref DeployPipelineSNSTopic
                   CustomData: A new change set was created for the TestStack. Do you want to implement the changes?
                 RunOrder: 2
               -
