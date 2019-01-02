@@ -36,23 +36,33 @@ phases:
 
     - echo "Updating template configurtion files to use the appropriate values"
     - cp cloudformation/config/prod/environment-base-params.json cloudformation/environment-base-params-prod.json
+    - cp cloudformation/config/dev/environment-base-params.json cloudformation/environment-base-params-dev.json
     - |
-      secret_string_escaped_json=$(aws secretsmanager get-secret-value --region eu-west-1 --secret-id WixitProd | jq '.SecretString')
-      temp="${secret_string_escaped_json%\"}"
-      secret_string_json="${temp#\"}"
+      secret_string_escaped_json_prod=$(aws secretsmanager get-secret-value --region eu-west-1 --secret-id WixitProd | jq '.SecretString')
+      secret_string_escaped_json_dev=$(aws secretsmanager get-secret-value --region eu-west-1 --secret-id WixitDev | jq '.SecretString')
+      temp_prod="${secret_string_escaped_json_prod%\"}"
+      temp_dev="${secret_string_escaped_json_dev%\"}"
+      secret_string_json_prod="${temp_prod#\"}"
+      secret_string_json_dev="${temp_dev#\"}"
 
-      postgre_password_str=$(echo $secret_string_json | sed 's/\\//g' | jq .PostgreDbPassword)
-      postgre_password_str_temp="${postgre_password_str%\"}"
-      DATABASE_MASTER_PASSWORD="${postgre_password_str_temp#\"}"
+      postgre_password_prod_str=$(echo $secret_string_json_prod | sed 's/\\//g' | jq .PostgreDbPassword)
+      postgre_password_dev_str=$(echo $secret_string_json_dev | sed 's/\\//g' | jq .PostgreDbPassword)
+      postgre_password_prod_str_temp="${postgre_password_str_prod%\"}"
+      postgre_password_dev_str_temp="${postgre_password_str_dev%\"}"
+      DATABASE_MASTER_PASSWORD_PROD="${postgre_password_str_temp_prod#\"}"
+      DATABASE_MASTER_PASSWORD_DEV="${postgre_password_str_temp_dev#\"}"
 
-      sed -i -e "s/DATABASE_MASTER_PASSWORD_PLACEHOLDER/$DATABASE_MASTER_PASSWORD/" cloudformation/environment-base-params-prod.json
-      cat cloudformation/environment-base-params-prod.json
+      sed -i -e "s/DATABASE_MASTER_PASSWORD_PLACEHOLDER/$DATABASE_MASTER_PASSWORD_PROD/" cloudformation/environment-base-params-prod.json
+      sed -i -e "s/DATABASE_MASTER_PASSWORD_PLACEHOLDER/$DATABASE_MASTER_PASSWORD_DEV/" cloudformation/environment-base-params-dev.json
 
     - sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" cloudformation/environment-base-params-prod.json
-    - cat cloudformation/environment-base-params-prod.json
+    - sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" cloudformation/environment-base-params-dev.json
+
     - aws s3 cp "cloudformation/environment-base.yaml" "s3://$TEMPLATE_BUCKET/codebuild/environment-base.yaml"
-    - aws s3 cp "cloudformation/environment-base-params-prod.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params.json"
+    - aws s3 cp "cloudformation/environment-base-params-prod.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params-prod.json"
+    - aws s3 cp "cloudformation/environment-base-params-dev.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params-dev.json"
 artifacts:
   files:
   - cloudformation/environment-base.yaml
   - cloudformation/environment-base-params-prod.json
+  - cloudformation/environment-base-params-dev.json
