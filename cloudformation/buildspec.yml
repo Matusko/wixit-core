@@ -40,6 +40,10 @@ phases:
     - |
       secret_string_escaped_json_prod=$(aws secretsmanager get-secret-value --region eu-west-1 --secret-id WixitProd | jq '.SecretString')
       secret_string_escaped_json_dev=$(aws secretsmanager get-secret-value --region eu-west-1 --secret-id WixitDev | jq '.SecretString')
+
+      echo $secret_string_escaped_json_prod
+      echo $secret_string_escaped_json_dev
+
       temp_prod="${secret_string_escaped_json_prod%\"}"
       temp_dev="${secret_string_escaped_json_dev%\"}"
       secret_string_json_prod="${temp_prod#\"}"
@@ -52,11 +56,17 @@ phases:
       DATABASE_MASTER_PASSWORD_PROD="${postgre_password_str_temp_prod#\"}"
       DATABASE_MASTER_PASSWORD_DEV="${postgre_password_str_temp_dev#\"}"
 
+      echo $DATABASE_MASTER_PASSWORD_PROD
+      echo $DATABASE_MASTER_PASSWORD_DEV
+
       sed -i -e "s/DATABASE_MASTER_PASSWORD_PLACEHOLDER/$DATABASE_MASTER_PASSWORD_PROD/" cloudformation/environment-base-params-prod.json
       sed -i -e "s/DATABASE_MASTER_PASSWORD_PLACEHOLDER/$DATABASE_MASTER_PASSWORD_DEV/" cloudformation/environment-base-params-dev.json
 
     - sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" cloudformation/environment-base-params-prod.json
     - sed -i -e "s/TEMPLATE_PATH_PLACEHOLDER/$TEMPLATE_BUCKET\/codebuild/" cloudformation/environment-base-params-dev.json
+
+    - cat  cloudformation/environment-base-params-prod.json
+    - cat  cloudformation/environment-base-params-dev.json
 
     - aws s3 cp "cloudformation/environment-base.yaml" "s3://$TEMPLATE_BUCKET/codebuild/environment-base.yaml"
     - aws s3 cp "cloudformation/environment-base-params-prod.json" "s3://$TEMPLATE_BUCKET/codebuild/environment-base-params-prod.json"
