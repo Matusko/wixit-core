@@ -41,6 +41,7 @@ phases:
       secret_string_escaped_json_prod=$(aws secretsmanager get-secret-value --region eu-west-1 --secret-id WixitProd | jq '.SecretString')
       secret_string_escaped_json_dev=$(aws secretsmanager get-secret-value --region eu-west-1 --secret-id WixitDev | jq '.SecretString')
 
+      echo 1
       echo $secret_string_escaped_json_prod
       echo $secret_string_escaped_json_dev
 
@@ -49,13 +50,23 @@ phases:
       secret_string_json_prod="${temp_prod#\"}"
       secret_string_json_dev="${temp_dev#\"}"
 
+      echo 2
+      echo $secret_string_json_prod
+      echo $secret_string_json_dev
+
       postgre_password_prod_str=$(echo $secret_string_json_prod | sed 's/\\//g' | jq .PostgreDbPassword)
       postgre_password_dev_str=$(echo $secret_string_json_dev | sed 's/\\//g' | jq .PostgreDbPassword)
       postgre_password_prod_str_temp="${postgre_password_str_prod%\"}"
       postgre_password_dev_str_temp="${postgre_password_str_dev%\"}"
+
+      echo 3
+      echo $postgre_password_prod_str_temp
+      echo $postgre_password_dev_str_temp
+
       DATABASE_MASTER_PASSWORD_PROD="${postgre_password_str_temp_prod#\"}"
       DATABASE_MASTER_PASSWORD_DEV="${postgre_password_str_temp_dev#\"}"
 
+      echo 4
       echo $DATABASE_MASTER_PASSWORD_PROD
       echo $DATABASE_MASTER_PASSWORD_DEV
 
