@@ -1,0 +1,52 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  Subnets:
+    Type: List<AWS::EC2::Subnet::Id>
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+
+
+Resources:
+  RedisReplicationGroup:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Properties:
+      AutomaticFailoverEnabled: false
+      AutoMinorVersionUpgrade: true
+      NumCacheClusters: 1
+      CacheNodeType: cache.t2.micro
+      CacheSubnetGroupName:
+        Ref: RedisReplicationGroupSubnets
+      Engine: redis
+      EngineVersion: '5.0.0'
+      Port: 6379
+      ReplicationGroupDescription: Redis replication group for quick accessible wixit data
+      SecurityGroupIds:
+        - Ref: RedisReplicationGroupSecurityGroup
+
+  RedisReplicationGroupSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ElastiCache ReplicationGroup
+      VpcId: !Ref VpcId
+      SecurityGroupIngress :
+        - CidrIp: "0.0.0.0/0"
+          IpProtocol: "TCP"
+          FromPort: 6379
+          ToPort: 6379
+
+  RedisReplicationGroupSubnets:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      Description: Subnets for ElastiCache ReplicationGroup
+      SubnetIds:
+        Ref: Subnets
+
+Outputs:
+  RedisEndpoint:
+    Value: !GetAtt RedisReplicationGroup.PrimaryEndPoint.Address
+
+  RedisPort:
+    Value: !GetAtt RedisReplicationGroup.PrimaryEndPoint.Port
