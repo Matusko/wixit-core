@@ -93,6 +93,11 @@ Resources:
                   - "iam:PassRole"
                 Resource:
                   - Fn::Sub: arn:aws:iam::${AWS::AccountId}:role/CloudFormationRole-${AWS::StackName}
+              - Effect: "Allow"
+                Action:
+                  - 'sns:Publish'
+                Resource:
+                  - Fn::Sub: arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${AWS::StackName}*
 
   CloudFormationRole:
     Type: "AWS::IAM::Role"
